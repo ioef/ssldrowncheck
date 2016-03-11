@@ -47,11 +47,12 @@ def main():
 
     port = options.port
     
+    vuln = False
     
-
+    lista=[]
+    
     print("Performing DROWN attack check for host:%s on port:%s"%(host,port))
     print("\n")
-    
     for cipher_id, ciphersuite in cipher_suites.iteritems():
 	
 	print("Currently Checking Ciphersuite:%s"%(ciphersuite))    
@@ -95,14 +96,23 @@ def main():
 	    data = s.recv(2)
 	    #check the cipherspec length field for having the value 3
 	    if data == '\x00\x03': 
-		print("Received Server Hello! Server is Propably Vulnerable!!!!")
+		vuln=True
+		lista.append(cipher_id)
+		
 	    else: 
-		print("Server Not Vulnerable!")
-	print("\n")
-	
+		#print("Server Not Vulnerable!")
+		pass
+	    
 	s.close()    
 
 
+    if (vuln==True):
+	print("\n")
+	print("Server Found Vulnerable since it uses the following Algorithms:")
+	print("---------------------------------------------------------------")
+	for i in lista:
+	    print( cipher_suites[i])
+		
 
 if __name__ == '__main__':
     main()   
