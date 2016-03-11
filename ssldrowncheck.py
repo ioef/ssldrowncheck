@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # Created by ioef - Efthimios Iosifidis 
-# Tool for checking the DROWN attack on a specific host
+# An implementation of a tool for checking the DROWN attack on a specific host
+#
 import socket,binascii,string,sys,csv
 
 
