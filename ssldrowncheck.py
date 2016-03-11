@@ -69,6 +69,7 @@ for cipher_id, ciphersuite in cipher_suites.iteritems():
     else:
         data = s.recv(8)
         data = s.recv(2)
+        #check the Cipher Spec Field if having the value 3
         if data == '\x00\x03': 
             print("Received Server Hello! Server is Propably Vulnerable!!!!")
         else: 
