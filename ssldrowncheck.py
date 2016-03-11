@@ -49,7 +49,7 @@ def main():
     
     vuln = False
     
-    lista=[]
+    vulnlist=[]
     
     print("Performing DROWN attack check for host:%s on port:%s"%(host,port))
     print("\n")
@@ -97,7 +97,7 @@ def main():
 	    #check the cipherspec length field for having the value 3
 	    if data == '\x00\x03': 
 		vuln=True
-		lista.append(cipher_id)
+		vulnlist.append(cipher_id)
 		
 	    else: 
 		#print("Server Not Vulnerable!")
@@ -110,7 +110,7 @@ def main():
 	print("\n")
 	print("Server Found Vulnerable since it uses the following Algorithms:")
 	print("---------------------------------------------------------------")
-	for i in lista:
+	for i in vulnlist:
 	    print( cipher_suites[i])
 		
 
