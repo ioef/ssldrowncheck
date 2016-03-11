@@ -112,6 +112,9 @@ def main():
 	print("---------------------------------------------------------------")
 	for i in vulnlist:
 	    print( cipher_suites[i])
+    else:
+	print("\n")
+	print("The Server is not Vulnerable. Exiting...")
 		
     print("\n")
 
