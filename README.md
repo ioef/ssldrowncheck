@@ -4,7 +4,5 @@ A basic python script which can quickly check if a server is vulnerable to the n
 
 usage:  
         python ssldrowncheck.py host 
-        
         OR
-        
         python ssldrowncheck.py host --port=443 
