@@ -50,6 +50,7 @@ def main():
     
 
     print("Performing DROWN attack check for host:%s on port:%s"%(host,port))
+    print("\n")
     
     for cipher_id, ciphersuite in cipher_suites.iteritems():
 	
@@ -97,7 +98,7 @@ def main():
 		print("Received Server Hello! Server is Propably Vulnerable!!!!")
 	    else: 
 		print("Server Not Vulnerable!")
-	print(" ")
+	print("\n")
 	
 	s.close()    
 
