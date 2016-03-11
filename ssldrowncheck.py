@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # Created by ioef - Efthimios Iosifidis 
-# An implementation of a tool for checking the DROWN attack on a specific host
-#
+# Tool for checking the DROWN attack on a specific host
+
 import socket,binascii,string,sys,csv
+from optparse import OptionParser
+
 
 
 cipher_suites = {
@@ -21,59 +23,85 @@ ssl2_handshakepkt='\x80\x2c\x01\x00\x02\x00\x03\x00\x00\x00\x20'
 # NULL string used as handshake challenge 
 challenge = '\x00' * 32
 
-host="XXX.XXX.XXX.XXX"
-
-port=443
 
 
-print("Performing DROWN attack check for host:%s on port:%s"%(host,port))
+def main(): 
+    
+    # Parse scan parameters
+    parser = OptionParser(usage='%prog host [options]', description='A simple Checker for the SSL/TLS Drown vulnerability') 
+    parser.add_option("--port", dest="port", help="port", default = 443, type="int", metavar="443")
 
-for cipher_id, ciphersuite in cipher_suites.iteritems():
+
+
+    (options, arguments) = parser.parse_args()
+
+
+    # Perform checks on user input
+    #check the length of the arguments list
+    if len(arguments) < 1:
+	parser.print_help()
+	exit(1)
+
+    #retrieve the first argument which is the IP address      
+    host = arguments[0]
+
+    port = options.port
     
-    print("Currently Checking Ciphersuite:%s"%(ciphersuite))    
     
-    cipher = binascii.unhexlify(cipher_id) 
+
+    print("Performing DROWN attack check for host:%s on port:%s"%(host,port))
     
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    
-    try:   
-        
-        s.connect((host, port))		
-    
-    except socket.error, msg:
-        print "[!] Could not connect to target host: %s" % msg
-        s.close()
-        sys.exit(1)    
-    
-        
-    s.send(ssl2_handshakepkt+cipher+challenge)
-    
-    data =' '
-    
-    try: 
-        data = s.recv(1)
-    
-    except socket.error, msg:
-        s.close()   
-    
-        
-    # TLS/SSLv3 Server Hello
-    if data == '\x16':   
-        print("Server version is the TLS/SSLv3. Not Vulnerable!")
-    elif data == '\x15': 
-        print("Received Alert Error Message")
-    elif data == ' ':
-        print("Didn't receive response! Exiting...")
-        exit(1)
-    # SSLv2 Server Hello
-    else:
-        data = s.recv(8)
-        data = s.recv(2)
-        #check the Cipher Spec Field if having the value 3
-        if data == '\x00\x03': 
-            print("Received Server Hello! Server is Propably Vulnerable!!!!")
-        else: 
-            print("Server Not Vulnerable!")
-    print(" ")
-    
-    s.close()    
+    for cipher_id, ciphersuite in cipher_suites.iteritems():
+	
+	print("Currently Checking Ciphersuite:%s"%(ciphersuite))    
+	
+	cipher = binascii.unhexlify(cipher_id) 
+	
+	s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+	
+	try:   
+	    
+	    s.connect((host, port))		
+	
+	except socket.error, msg:
+	    print "[!] Could not connect to target host: %s" % msg
+	    s.close()
+	    sys.exit(1)    
+	
+	    
+	s.send(ssl2_handshakepkt+cipher+challenge)
+	
+	data =' '
+	
+	try: 
+	    data = s.recv(1)
+	
+	except socket.error, msg:
+	    s.close()   
+	
+	    
+	# TLS/SSLv3 Server Hello
+	if data == '\x16':   
+	    print("Server version is the TLS/SSLv3. Not Vulnerable!")
+	elif data == '\x15': 
+	    print("Received Alert Error Message")
+	elif data == ' ':
+	    print("Didn't receive response! Exiting...")
+	    exit(1)
+	# SSLv2 Server Hello
+	else:
+	    data = s.recv(8)
+	    data = s.recv(2)
+	    #check the cipherspec length field for having the value 3
+	    if data == '\x00\x03': 
+		print("Received Server Hello! Server is Propably Vulnerable!!!!")
+	    else: 
+		print("Server Not Vulnerable!")
+	print(" ")
+	
+	s.close()    
+
+
+
+if __name__ == '__main__':
+    main()   
