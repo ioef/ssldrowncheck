@@ -8,6 +8,7 @@ from optparse import OptionParser
 
 
 cipher_suites = {
+'010080': 'SSL2_RC4_128_WITH_MD5',
 '020080': 'SSL2_RC4_128_EXPORT40_WITH_MD5',
 '030080': 'SSL2_RC2_CBC_128_CBC_WITH_MD5', 
 '040080': 'SSL2_RC2_CBC_128_CBC_WITH_MD5',
@@ -15,6 +16,7 @@ cipher_suites = {
 '060040': 'SSL2_DES_64_CBC_WITH_MD5', 
 '0700C0': 'SSL2_DES_192_EDE3_CBC_WITH_MD5', 
 '080080': 'SSL2_RC4_64_WITH_MD5', 
+
 }
 
 
