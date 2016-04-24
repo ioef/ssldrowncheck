@@ -97,7 +97,7 @@ def main():
 	    data = s.recv(8)
 	    data = s.recv(2)
 	    #check the cipherspec length field for having the value 3
-	    if data == '\x00\x03': 
+	    if (data == '\x00\x03') | (data == '\x00\x06'): 
 		vuln=True
 		vulnlist.append(cipher_id)
 		
