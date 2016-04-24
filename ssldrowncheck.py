@@ -106,14 +106,17 @@ def main():
 		pass
 	    
 	s.close()    
-
+    
+    #leave only the unique items in the list
+    vulnlist = list(set(vulnlist))
+    
 
     if (vuln==True):
 	print("\n")
 	print("Server Found Vulnerable since it uses the following Algorithms:")
-	print("---------------------------------------------------------------")
+	print("--------------------------------------------------------------------")
 	for i in vulnlist:
-	    print( cipher_suites[i])
+	    print("[*] Cipher id: 0x%s, Ciphersuite: %s"%(i,cipher_suites[i]))
     else:
 	print("\n")
 	print("The Server is not Vulnerable. Exiting...")
